@@ -11,9 +11,11 @@ Encuentran la consigna [aquí](https://docs.google.com/document/d/1qtVP_6MtvyEdM
 
 Nosotres usamos [gloss](https://hackage.haskell.org/package/gloss) para graficar, pero pueden usar otra (¡y llevarse un punto ⭐️!). Gloss tiene sus problemas...
 
-### Instalar
+## Instalación
 
-Si tenés algún Linux debería ser suficiente con que instales el paquete de `ghc` y `cabal`. Para instalar `gloss` usamos `cabal`:
+Si tenés algún Linux debería ser suficiente con que instales el paquete de `ghc` y `cabal`. En macOS se instalan fácil con `brew`. Si tienen Windows, cuando lo desculen pueden pasarnos un texto para pegar aquí 🙏
+
+Para instalar `gloss` usamos `cabal`:
 
 ```bash
 cabal update
@@ -29,12 +31,11 @@ Prelude Graphics.Gloss> let win = InWindow "Paradigmas" (200,200) (0,0)
 Prelude Graphics.Gloss> display win white $ circle 100
 ```
 
-Si tuviste un fallo al intentar importar `Graphics.Gloss` entonces pedí ayuda.
-Si tenés otro sistema operativo, es probable que o bien vos sepás mejor que nosotres qué hacer.
+Si tuviste un fallo en el proceso abajo hay algunas ayudas. Si nada de esto
 
-### Posibles problemas de instalación
+## Posibles problemas de instalación
 
-#### Missing C library
+### Missing C library
 
 Si al tratar de instalar gloss tiene el siguiente mensaje de error:
 
@@ -48,7 +49,7 @@ pueden solucionarlo instalando las siguientes librerías de sistema.
 sudo apt-get install freeglut3 freeglut3-dev
 ```
 
-#### Could not load module
+### Could not load module
 
 Si al cargar el archivo `Main.hs` les tira
 
@@ -64,10 +65,10 @@ Main.hs:4:1: error:
 Deben pasar pasar un argumento a `ghci`:
 
 ```bash
-  ghci -package GLUT
+ghci -package GLUT
 ```
 
-#### macOS issue: NSInternalInconsistencyException
+### macOS issue: NSInternalInconsistencyException
 
 En macOS hay un problema en el cual les tira el siguiente mensaje:
 
