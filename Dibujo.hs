@@ -121,17 +121,13 @@ andP p1 p2 x = p1 x && p2 x
 orP :: Pred a -> Pred a -> Pred a
 orP p1 p2 x = p1 x || p2 x
 
--- -- Describe la figura. Ejemplos:
--- --
+-- Describe la figura. Ejemplos:
 -- desc (const "b") (Basica b) = "b"
--- --
 -- desc (const "b") (Rotar (Basica b)) = "rot (b)"
--- --
--- desc (const "b") (Apilar n m (Basica b) (Basica b)) = "api n m (b)
--- (b)"
+-- desc (const "b") (Apilar n m (Basica b) (Basica b)) = "api n m (b)(b)"
 
--- -- La descripción de cada constructor son sus tres primeros
--- -- símbolos en minúscula, excepto `Rot45` al que se le agrega el `45`.
+-- La descripción de cada constructor son sus tres primeros
+-- símbolos en minúscula, excepto `Rot45` al que se le agrega el `45`.
 
 desc :: (a -> String) -> Dibujo a -> String
 desc f x = sem f descRot descEsp descRot45 descApi descJun descEnc x
@@ -154,11 +150,23 @@ descJun i j x y = "Jun"++" "++"i"++" "++"j"++" "++"("++x++")"++" "++"("++y++")"
 descEnc :: String -> String -> String
 descEnc x y = "Enc"++" "++"("++x++")"++" "++"("++y++")"
 
--- -- Junta todas las figuras básicas de un dibujo.
--- basicas :: Dibujo a -> [a]
+-- Junta todas las figuras básicas de un dibujo.
+basicas :: Dibujo a -> [a]
+basicas x = sem aux_1 aux_2 aux_2 aux_2 aux_3 aux_3 aux_4 x
 
--- -- Hay 4 rotaciones seguidas.
+aux_1 :: a -> [a]
+aux_1 x = [x]
 
+aux_2 :: a -> a
+aux_2 x = x
+
+aux_3 :: Int -> Int -> [a] -> [a] -> [a]
+aux_3 i j xs ys = xs ++ ys
+
+aux_4 :: [a] -> [a] -> [a]
+aux_4 xs ys = xs ++ ys
+
+-- Hay 4 rotaciones seguidas.
 esRot360 :: Pred (Dibujo a)
 esRot360 (Rotar(Rotar(Rotar(Rotar x)))) = True
 esRot360 (Basica x) = False
@@ -169,7 +177,7 @@ esRot360 (Apilar i j x y) = esRot360 x || esRot360 y
 esRot360 (Juntar i j x y) = esRot360 x || esRot360 y
 esRot360 (Encimar x y) = esRot360 x || esRot360 y
 
--- -- Hay 2 espejados seguidos.
+-- Hay 2 espejados seguidos.
 esFlip2 :: Pred (Dibujo a)
 esFlip2 (Espejar(Espejar x)) = True
 esFlip2 (Basica x) = False
@@ -183,8 +191,8 @@ esFlip2 (Encimar x y) = esFlip2 x || esFlip2 y
 data Superfluo = RotacionSuperflua | FlipSuperfluo
                deriving (Show)
 
--- -- Aplica todos los chequeos y acumula todos los errores, y
--- -- sólo devuelve la figura si no hubo ningún error.
+-- Aplica todos los chequeos y acumula todos los errores, y
+-- sólo devuelve la figura si no hubo ningún error.
 check :: Dibujo a -> Either [Superfluo] (Dibujo a)
 check a | esRot360 a && esFlip2 a = Left [RotacionSuperflua,FlipSuperfluo]
         | esRot360 a = Left [RotacionSuperflua]
