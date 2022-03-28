@@ -88,10 +88,30 @@ cambiar :: Pred a -> a -> Dibujo a -> Dibujo a
 cambiar p n x = mapDib (\x -> if (p x) then n else x) x 
 
 -- Alguna básica satisface el predicado.
--- anyDib :: Pred a -> Dibujo a -> Bool
+anyDib :: Pred a -> Dibujo a -> Bool
+anyDib p x = sem p any_bool1 any_bool1 any_bool1 any_bool2 any_bool2 any_bool3 x
+
+any_bool1 :: Bool -> Bool
+any_bool1 x = x
+
+any_bool2 :: Int -> Int -> Bool -> Bool -> Bool
+any_bool2 i j x y = x || y
+
+any_bool3 :: Bool -> Bool -> Bool
+any_bool3 x y = x || y
 
 -- Todas las básicas satisfacen el predicado.
--- allDib :: Pred a -> Dibujo a -> Bool
+allDib :: Pred a -> Dibujo a -> Bool
+allDib p x = sem p all_bool1 all_bool1 all_bool1 all_bool2 all_bool2 all_bool3 x
+
+all_bool1 :: Bool -> Bool
+all_bool1 x = x
+
+all_bool2 :: Int -> Int -> Bool -> Bool -> Bool
+all_bool2 i j x y = x && y
+
+all_bool3 :: Bool -> Bool -> Bool
+all_bool3 x y = x && y
 
 -- Los dos predicados se cumplen para el elemento recibido.
 andP :: Pred a -> Pred a -> Pred a
