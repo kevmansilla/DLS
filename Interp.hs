@@ -64,7 +64,41 @@ transf f d (xs,ys) a b c  = translate (fst a') (snd a') .
   where ang = radToDeg $ argV b
         a' = a V.+ half (b V.+ c)
 
+-- Función interp
+interp :: Output a -> Output (Dibujo a)
+interp f (Basica x) = f x
+interp f (Rotar x) = interp_rotar (interp f x)
+interp f (Rot45 x) = interp_rot45 (interp f x)
+interp f (Espejar x) = interp_espejar (interp f x) 
+interp f (Encimar x y) = interp_encimar (interp f x) (interp f y)
+interp f (Juntar i j x y) = interp_juntar i j (interp f x) (interp f y)
+interp f (Apilar i j x y) = interp_apilar i j (interp f x) (interp f y)
 
--- Claramente esto sólo funciona para el ejemplo!
-interp :: Output () -> Output (Dibujo ())
-interp f () = f ()
+-- funciones para la semántica
+interp_rotar :: FloatingPic -> FloatingPic
+interp_rotar f x y z = f (x V.+ y) z (zero V.- y) 
+
+interp_rot45 :: FloatingPic -> FloatingPic
+interp_rot45 f x y z = f (x V.+ (half(y V.+ z))) (half(y V.+ z)) (half(z V.- y))
+
+interp_espejar :: FloatingPic -> FloatingPic
+interp_espejar f x y z = f (x V.+ y) (zero V.- y) z 
+
+interp_encimar :: FloatingPic -> FloatingPic -> FloatingPic
+interp_encimar f g x y z= pictures[f x y z, g x y z ]
+
+interp_juntar :: Int -> Int -> FloatingPic -> FloatingPic -> FloatingPic
+interp_juntar i j f g x y z = pictures[f x y' z, g (x V.+ y') (r' V.* y) z]
+  where a = fromInteger (toInteger i)
+        b = fromInteger (toInteger j)
+        r = a/(b+a)
+        r' = b/(b+a)
+        y' = r V.* y
+
+interp_apilar :: Int -> Int -> FloatingPic -> FloatingPic -> FloatingPic
+interp_apilar i j f g x y z = pictures[f (x V.+ z') y (r V.* z), g x y z']
+  where a = fromInteger (toInteger i)
+        b = fromInteger (toInteger j)
+        r = a/(b+a)
+        r' = b/(b+a)
+        z' = r' V.* z
