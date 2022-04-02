@@ -1,10 +1,12 @@
 module Basica.Ejemplo where
+import Basica.Escher
 import Dibujo
 import Interp
 
-type Basica = ()
+type Basica = Escher
+
 ejemplo :: Dibujo Basica
-ejemplo = ()
+ejemplo = escher 3 True
 
 interpBas :: Output Basica
-interpBas () = trian1
+interpBas True = trian2

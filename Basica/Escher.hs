@@ -7,8 +7,8 @@ type Escher = Bool
 
 -- El dibujoU.
 dibujoU :: Dibujo Escher -> Dibujo Escher
-dibujoU p = Rotar(Encimar (Encimar (Espejar (Rot45 p)) (Rotar (Espejar (Rot45 p)))) 
-                (Encimar (r180 (Espejar (Rot45 p))) (r270 (Espejar (Rot45 p)))))
+dibujoU p = Encimar (Encimar (Espejar (Rot45 p)) (Rotar (Espejar (Rot45 p)))) 
+                (Encimar (r180 (Espejar (Rot45 p))) (r270 (Espejar (Rot45 p))))
 
 -- El dibujo t.
 dibujoT :: Dibujo Escher -> Dibujo Escher
