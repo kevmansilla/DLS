@@ -1,9 +1,10 @@
 module Dibujo where
 
 -- Definir el lenguaje (reemplazar `()` con lo que corresponda).
-data Dibujo a = Basica a 
-    | Rotar (Dibujo a) 
-    | Espejar (Dibujo a) 
+data Dibujo a = Vacia
+    | Basica a
+    | Rotar (Dibujo a)
+    | Espejar (Dibujo a)
     | Rot45 (Dibujo a)
     | Apilar Int Int (Dibujo a) (Dibujo a)
     | Juntar Int Int (Dibujo a) (Dibujo a)
@@ -53,6 +54,7 @@ pureDib x = Basica x
 
 -- map para nuestro lenguaje.
 mapDib :: (a -> b) -> Dibujo a -> Dibujo b
+mapDib f Vacia = Vacia
 mapDib f (Basica x) = pureDib (f x)
 mapDib f (Rotar x) = Rotar (mapDib f x)
 mapDib f (Espejar x) = Espejar (mapDib f x)

@@ -6,7 +6,7 @@ import Interp
 type Basica = Escher
 
 ejemplo :: Dibujo Basica
-ejemplo = escher 3 True
+ejemplo = escher 2 True
 
 interpBas :: Output Basica
 interpBas True = trian2

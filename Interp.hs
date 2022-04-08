@@ -66,6 +66,7 @@ transf f d (xs,ys) a b c  = translate (fst a') (snd a') .
 
 -- Función interp
 interp :: Output a -> Output (Dibujo a)
+interp f Vacia = simple blank
 interp f (Basica x) = f x
 interp f (Rotar x) = interp_rotar (interp f x)
 interp f (Rot45 x) = interp_rot45 (interp f x)
