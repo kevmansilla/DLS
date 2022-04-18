@@ -48,7 +48,25 @@ Las funciones básicas no están incluidas en la definición del lenguaje debido
 
 3. Explique cómo hace Interp.grid para construir la grilla, explicando cada pedazo de código que interviene. ¡Ojo! Si mal no recuerdo hay un error sutil..
 
+La función `grid` del módulo `Interp.hs` es la siguiente:
+```
+grid :: Int -> Vector -> Float -> Float -> Picture
+grid n v sep l = pictures [ls,translate 0 (l*toEnum n) (rotate 90 ls)]
+  where ls = pictures $ take (n+1) $ hlines v sep l
+```
+Construye una grilla de `n` líneas, comenzando en `v` con una separación de `sep` y una longitud de `l`. En la línea `pictures [ls,translate 0 (l*toEnum n) (rotate 90 ls)]` tenemos una composición de dos funciones, primero veamos `ls`:
+```
+ls = pictures $ take (n+1) $ hlines v sep l
+```
+Esta función auxiliar se encarga de construir `n+1` líneas horizontales que comienzan en `v` con una separación de `sep` y una longitud de `l`. Esto se realiza por medio de la función `hlines` la cual devuelve un resultado del tipo `[Picture]`entonces con la ayuda de `take` se obtiene las `n+1` líneas que se necesitan y las compone con `Picture`.
 
+La otra función que tenemos es:
+```
+translate 0 (l*toEnum n) (rotate 90 ls)
+```
+La cual se encarga de dibujar las líneas verticales, se puede ver que toma las líneas horizontales realizadas por `ls` y las rota. Luego con `translate` se trasladan a la posición.
+
+Para finalizar, con `Picture` se superponen ambos dibujos.
 ## Integrantes del grupo:
 
 * López, Leandro.
